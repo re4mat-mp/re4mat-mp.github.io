@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matias: building with Claude Code, small teams of agents and a person in the loop</title>
+<meta name="description" content="Matias builds with Claude Code: small teams of agents with one craft each, reviewers that never wrote the code they review, and guards that keep a person in the loop. The pieces, in order: the setup guide and the factory.">
+<link rel="icon" href="data:,">
+<script>
+/* ============================================================================================
+   THE PROJECTS. One entry per card, in the order they are shown (and in the GIF).
+   To add one: copy an entry, fill it in, and add the same project to the "Text version" list
+   at the bottom of this file (it is plain HTML so it reads with JavaScript off).
+   art: 'box' | 'factory' draws a picture from kit.js; leave it out and the card shows the glyph big.
+   ============================================================================================ */
+const PROJECTS = [
+  {
+    id: 'box',
+    glyph: '箱', glyphLabel: 'BOX',
+    title: 'The setup guide',
+    line: 'My Claude Code setup and the habits behind it, mistakes included.',
+    art: 'box',
+    kicker: 'claude-setup-guide',
+    body: [
+      'The part of my setup I\'d hand to a friend: <b>agents with one craft each</b>, <b>reviewers that never wrote the code</b>, <b>guard hooks</b>, and <b>a memory that loads whole</b>.',
+      'Open the box and click any part. Or clone the repo and, in ten minutes, watch a hook stop a merge that has no human approval.'
+    ],
+    facts: ['5 agents', '3 guard hooks', '35 habits, one line each', '25 tests for the merge guard'],
+    links: [
+      { label: 'Open the box', href: 'https://re4mat-mp.github.io/claude-setup-guide/', main: true },
+      { label: 'The repo', href: 'https://github.com/re4mat-mp/claude-setup-guide' }
+    ]
+  },
+  {
+    id: 'factory',
+    glyph: '工場', glyphLabel: 'FACTORY',
+    title: 'The factory',
+    line: 'How I run the big jobs: agents read in parallel, code checks every answer.',
+    art: 'factory',
+    kicker: 'part of the setup guide',
+    body: [
+      'When a job is too big for one agent, it runs like a production line. <b>A script cuts the work</b>, <b>agents read in parallel</b>, and <b>code checks every answer</b> before anything leaves the line.',
+      'One rule holds it together: the models read and judge, the code counts and certifies. The page runs an example job, with invented numbers.'
+    ],
+    facts: ['cut', 'read', 'judge', 'check', 'count'],
+    links: [
+      { label: 'See it run', href: 'https://re4mat-mp.github.io/claude-setup-guide/factory/', main: true },
+      { label: 'The repo', href: 'https://github.com/re4mat-mp/claude-setup-guide' }
+    ]
+  }
+];
+</script>
+<script src="kit.js"></script>
+<style>
+  :root{--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,sans-serif;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --ink:#15171C;--ink2:#3D424C;--ink3:#5F6672;--ink4:#8C929C;--ground:#F1F2F4;--pale:#E7E9ED;--acc:#6A4CF5;--acc-l:#DCD4FF}
+  html,body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);overflow-x:hidden}
+  a{color:var(--ink);text-decoration-color:var(--acc);text-decoration-thickness:2px;text-underline-offset:3px}
+  .tone{background-image:radial-gradient(rgba(21,23,28,.10) 1.1px,transparent 1.3px);background-size:7px 7px}
+  .tone-acc{background-color:var(--acc-l);background-image:radial-gradient(rgba(21,23,28,.14) 1.2px,transparent 1.4px);background-size:6px 6px}
+
+  /* ---------- the welcome ---------- */
+  #hero{position:relative;max-width:1200px;margin:0 auto;padding:40px 40px 18px;box-sizing:border-box}
+  .top{display:flex;gap:26px;align-items:center}
+  .badge{flex:0 0 auto;width:104px;height:104px;border:3px solid var(--ink);border-radius:18px;box-shadow:5px 5px 0 var(--ink);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-4deg);line-height:1}
+  .badge .g{font-size:44px;font-weight:900;letter-spacing:-.02em}
+  .badge .k{font-size:11px;font-weight:800;letter-spacing:.07em;margin-top:6px}
+  .kick{font-size:15px;font-weight:700;color:var(--ink3);letter-spacing:.05em;margin-bottom:6px}
+  h1{margin:0;font-size:clamp(30px,4.4vw,54px);font-weight:850;line-height:1.1;letter-spacing:-.02em}
+  h1 span{display:inline-block}
+  h1 b{font-weight:900;background:linear-gradient(transparent 62%,var(--acc-l) 62%)}
+  .beats{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin:34px 0 0}
+  .beat{margin:0}
+  .beat .art{border:2.5px solid var(--ink);border-radius:14px;background:#fff;box-shadow:5px 5px 0 var(--ink);overflow:hidden}
+  .beat svg{display:block;width:100%;height:auto}
+  .beat figcaption{margin-top:14px;font-size:20px;line-height:1.3;color:var(--ink2)}
+  .beat figcaption b{color:var(--ink);font-weight:850}
+  .beat .n{display:inline-block;width:26px;height:26px;border:2.2px solid var(--ink);border-radius:13px;text-align:center;line-height:23px;font-size:15px;font-weight:900;color:var(--ink);margin-right:8px;vertical-align:2px;background:#fff}
+
+  /* ---------- the pieces ---------- */
+  #pieces{max-width:1200px;margin:0 auto;padding:30px 40px 10px;box-sizing:border-box}
+  #pieces h2{margin:0;font-size:15px;font-weight:800;letter-spacing:.06em;color:var(--ink3);text-transform:uppercase}
+  #pieces .hint{margin:4px 0 0;font-size:16px;color:var(--ink3)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:28px;margin-top:20px}
+  .card{all:unset;box-sizing:border-box;position:relative;display:flex;flex-direction:column;cursor:pointer;border:2.5px solid var(--ink);border-radius:14px;
+    background:#fff;box-shadow:5px 5px 0 var(--ink);transition:transform .15s,box-shadow .15s;animation:deal .5s both}
+  .card:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+  .card:focus-visible{outline:3px solid var(--acc);outline-offset:4px}
+  .card .art{border-bottom:2.5px solid var(--ink);border-radius:11px 11px 0 0;overflow:hidden;aspect-ratio:360/190;display:flex;align-items:center;justify-content:center}
+  .card .art svg{display:block;width:100%;height:100%}
+  .card .art .big{font-size:84px;font-weight:900}
+  .card .body{padding:14px 18px 18px;display:flex;gap:14px;align-items:flex-start}
+  .card .num{flex:0 0 auto;width:30px;height:30px;border:2.4px solid var(--ink);border-radius:15px;text-align:center;line-height:26px;font-size:16px;font-weight:900}
+  .card .ttl{font-size:22px;font-weight:900;letter-spacing:-.01em;line-height:1.15}
+  .card .ttl .gl{font-size:15px;font-weight:800;color:var(--ink3);margin-left:6px}
+  .card .ln{font-size:16px;line-height:1.38;color:var(--ink2);margin-top:4px}
+  .plus{position:absolute;right:-11px;top:-11px;width:24px;height:24px;border-radius:12px;background:var(--ink);color:#fff;font-size:18px;font-weight:900;line-height:23px;text-align:center}
+  @keyframes deal{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  /* ---------- the panel ---------- */
+  dialog#panel{width:min(760px,calc(100vw - 32px));box-sizing:border-box;border:3px solid var(--ink);border-radius:16px;background:#fff;
+    box-shadow:7px 7px 0 var(--ink);padding:22px 24px 22px;color:var(--ink)}
+  dialog#panel::backdrop{background:rgba(241,242,244,.86)}
+  #panel .hd{display:flex;gap:18px;align-items:center;padding-right:40px}
+  #panel .badge{width:78px;height:78px;border-radius:14px;box-shadow:4px 4px 0 var(--ink)}
+  #panel .badge .g{font-size:30px}
+  #panel .badge .k{font-size:9.5px;margin-top:4px}
+  #panel .kind{font-size:13px;font-weight:800;color:var(--ink3);letter-spacing:.05em;font-family:var(--mono)}
+  #panel h2{margin:2px 0 0;font-size:28px;font-weight:900;letter-spacing:-.01em}
+  #panel p{margin:14px 0 0;font-size:17px;line-height:1.48;color:var(--ink2)}
+  #panel p b{color:var(--ink)}
+  #panel .facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding:0;list-style:none}
+  #panel .facts li{border:2px solid var(--ink);border-radius:8px;padding:3px 10px;font-size:14.5px;font-weight:700;background:var(--pale)}
+  #panel .links{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px;align-items:center}
+  #panel .links a{border:2.5px solid var(--ink);border-radius:22px;box-shadow:3px 3px 0 var(--ink);padding:7px 16px;font-size:16px;font-weight:800;text-decoration:none;background:#fff}
+  #panel .links a.main{background:var(--acc);color:#fff}
+  #panel .links a:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+  #panel .x{all:unset;position:absolute;right:14px;top:12px;width:36px;height:36px;border:2.5px solid var(--ink);border-radius:18px;background:#fff;font-size:20px;font-weight:900;line-height:34px;text-align:center;cursor:pointer}
+  #panel .x:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+
+  /* ---------- text version ---------- */
+  #text{max-width:720px;margin:0 auto;padding:40px 20px 24px;box-sizing:border-box;font-size:16px;line-height:1.55;color:var(--ink2)}
+  #text h2{font-size:20px;color:var(--ink);margin:0 0 4px}
+  #text h3{font-size:16px;color:var(--ink);margin:18px 0 4px}
+  #text .lead{font-size:13px;color:var(--ink3);margin:0 0 14px}
+  #text ol{padding-left:22px;margin:8px 0}
+  #text li{margin-bottom:8px}
+  #text b,#text strong{color:var(--ink)}
+  footer{max-width:720px;margin:0 auto;padding:6px 20px 48px;box-sizing:border-box;font-size:14px;color:var(--ink3)}
+
+  /* ---------- film mode (?film=1): the 1280x640 stage the GIF is captured from ---------- */
+  .fonly{display:none}
+  body.film{width:1280px;height:640px;overflow:hidden}
+  body.film #pieces,body.film #text,body.film footer{display:none}
+  body.film #hero{width:1280px;height:640px;max-width:none;padding:34px 48px 0;overflow:hidden}
+  body.film h1{font-size:56px;line-height:1.08}
+  body.film h1 .l2{display:block}
+  body.film .kick{font-size:16px}
+  body.film .beats{margin-top:30px;gap:30px}
+  body.film .beat figcaption{font-size:24px;margin-top:16px}
+  body.film .fonly{display:block}
+  .fpieces{position:absolute;left:48px;right:48px;top:204px}
+  .fpieces .k{font-size:17px;font-weight:800;letter-spacing:.06em;color:var(--ink3)}
+  .frow{display:flex;align-items:center;gap:26px;margin-top:14px;border:2.5px solid var(--ink);border-radius:14px;background:#fff;box-shadow:5px 5px 0 var(--ink);height:160px;overflow:hidden}
+  .frow .art{flex:0 0 304px;height:160px;border-right:2.5px solid var(--ink)}
+  .frow .art svg{display:block;width:304px;height:160px}
+  .frow .num{flex:0 0 auto;width:44px;height:44px;border:3px solid var(--ink);border-radius:22px;text-align:center;line-height:39px;font-size:24px;font-weight:900}
+  .frow .ttl{font-size:38px;font-weight:900;letter-spacing:-.015em;line-height:1.1}
+  .frow .ttl .gl{font-size:22px;font-weight:800;color:var(--ink3);margin-left:10px}
+  .frow .ln{font-size:24px;line-height:1.3;color:var(--ink2);margin-top:6px;padding-right:30px}
+  .fend{position:absolute;left:0;right:0;top:250px;text-align:center}
+  .fend .open{font-size:58px;font-weight:900;letter-spacing:-.02em}
+  .fend .chip{display:inline-block;margin-top:22px;background:var(--acc);color:#fff;border:3px solid var(--ink);border-radius:40px;box-shadow:6px 6px 0 var(--ink);
+    padding:12px 34px 14px;font-size:44px;font-weight:800;font-family:var(--mono);letter-spacing:-.01em}
+  .fend .sub{font-size:24px;color:var(--ink3);margin-top:30px}
+  .furl{position:absolute;right:48px;bottom:22px;font-size:17px;font-weight:700;color:var(--ink3);font-family:var(--mono)}
+  #cursor{position:absolute;left:0;top:0;width:34px;height:44px;pointer-events:none}
+
+  /* ---------- phone ---------- */
+  @media (max-width:760px){
+    #hero{padding:24px 18px 8px}
+    .top{gap:16px}
+    .badge{width:72px;height:72px;border-radius:14px;box-shadow:4px 4px 0 var(--ink)}
+    .badge .g{font-size:30px}.badge .k{font-size:9px;margin-top:4px}
+    .kick{font-size:13px}
+    .beats{grid-template-columns:1fr;gap:18px;margin-top:24px}
+    .beat{display:grid;grid-template-columns:52% 1fr;gap:14px;align-items:center}
+    .beat figcaption{margin:0;font-size:16px}
+    .beat .n{display:block;margin:0 0 6px}
+    #pieces{padding:26px 18px 6px}
+    .grid{grid-template-columns:1fr;gap:22px}
+    dialog#panel{padding:18px 16px}
+    #panel h2{font-size:23px}
+    #panel p{font-size:16px}
+    .plus{right:10px;top:10px}
+  }
+  @media (prefers-reduced-motion:reduce){.card{animation:none}}
+</style>
+<noscript><style>.beats,#pieces{display:none}</style></noscript>
+</head>
+<body>
+<header id="hero">
+  <div class="top">
+    <div class="badge tone-acc" aria-hidden="true"><span class="g">玄関</span><span class="k">ENTRANCE</span></div>
+    <div class="who">
+      <div class="kick">re4mat-mp · portfolio</div>
+      <h1><span class="l1">Hi, I'm Matias.</span> <span class="l2">I build with <b>Claude Code</b>.</span></h1>
+    </div>
+  </div>
+  <div class="beats">
+    <figure class="beat" id="b0"><div class="art tone"><svg viewBox="0 0 360 190" role="img" aria-label="Four agents, each holding the tool of its craft, and a swarm of small readers"></svg></div>
+      <figcaption><span class="n">1</span><b>Small teams of agents</b>, one craft each</figcaption></figure>
+    <figure class="beat" id="b1"><div class="art tone"><svg viewBox="0 0 360 190" role="img" aria-label="The agent that wrote a pull request hands it across a line to a different agent, who reviews it"></svg></div>
+      <figcaption><span class="n">2</span><b>Reviewers</b> that never wrote the code</figcaption></figure>
+    <figure class="beat" id="b2"><div class="art tone"><svg viewBox="0 0 360 190" role="img" aria-label="A guard hook stops a pull request at the door to main until a person approves it"></svg></div>
+      <figcaption><span class="n">3</span><b>Guards</b> that keep a person in the loop</figcaption></figure>
+  </div>
+  <div class="fonly fpieces" id="fPieces"><div class="k">THE PIECES, IN ORDER</div><div id="fRows"></div></div>
+  <div class="fonly fend" id="fEnd"><div class="open">Open the portfolio →</div><div class="chip" id="fChip">re4mat-mp.github.io</div>
+    <div class="sub">Every piece opens: click a card, then its page.</div></div>
+  <div class="fonly furl" id="fUrl">re4mat-mp.github.io</div>
+  <svg class="fonly" id="cursor" viewBox="0 0 34 44"><path d="M3,3 L3,35 L11,28 L17,41 L23,38 L17,25 L28,25 Z" fill="#fff" stroke="#15171C" stroke-width="3" stroke-linejoin="round"/></svg>
+</header>
+
+<section id="pieces" aria-labelledby="ph">
+  <h2 id="ph">The pieces, in order</h2>
+  <p class="hint">Click a card to open it.</p>
+  <div class="grid" id="grid"></div>
+</section>
+
+<dialog id="panel" aria-labelledby="pt">
+  <button class="x" id="px" aria-label="Close">×</button>
+  <div class="hd"><div class="badge tone-acc" aria-hidden="true"><span class="g" id="pg"></span><span class="k" id="pk"></span></div>
+    <div><div class="kind" id="pkind"></div><h2 id="pt"></h2></div></div>
+  <div id="pbody"></div>
+  <ul class="facts" id="pfacts"></ul>
+  <div class="links" id="plinks"></div>
+</dialog>
+
+<section id="text" aria-labelledby="tv">
+  <noscript><p><strong>The animation and the cards need JavaScript.</strong> This is the same page in words.</p></noscript>
+  <h2 id="tv">Text version</h2>
+  <p class="lead">The same page in words, for people and for AI.</p>
+  <p><strong>Hi, I'm Matias.</strong> I build with Claude Code: small teams of agents with one craft each, reviewers
+    that never wrote the code they review, and guards that keep a person in the loop before anything ships.</p>
+  <p>Every piece here opens: each one has a page you can click through.</p>
+  <h3>The pieces, in order</h3>
+  <ol>
+    <li><b><a href="https://re4mat-mp.github.io/claude-setup-guide/">The setup guide</a></b> (箱, the box): my Claude Code
+      setup and the habits behind it. Agents with one craft each, reviewers that never wrote the code, guard hooks,
+      and a memory that loads whole. <a href="https://re4mat-mp.github.io/claude-setup-guide/">Open the box</a> ·
+      <a href="https://github.com/re4mat-mp/claude-setup-guide">the repo</a>.</li>
+    <li><b><a href="https://re4mat-mp.github.io/claude-setup-guide/factory/">The factory</a></b> (工場): how I run the
+      big jobs. A script cuts the work, agents read in parallel, and code checks every answer. The page runs an
+      example job, with invented numbers. <a href="https://re4mat-mp.github.io/claude-setup-guide/factory/">See it run</a>.</li>
+  </ol>
+</section>
+<footer>Back to the profile: <a href="https://github.com/re4mat-mp">github.com/re4mat-mp</a></footer>
+
+<script>
+(function(){
+const K=window.KIT, q=new URLSearchParams(location.search);
+const FILM=q.has('film'), L=23;                 // the film loop, seconds
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+if(FILM) document.body.classList.add('film');
+
+// ---- build the cards (page) and the rows (film) from PROJECTS
+const grid=document.getElementById('grid');
+grid.innerHTML=PROJECTS.map((p,i)=>`<button class="card" data-id="${p.id}" aria-haspopup="dialog" style="animation-delay:${0.15+i*0.12}s">
+  <span class="plus" aria-hidden="true">+</span>
+  <div class="art tone">${p.art&&K.ART[p.art]?`<svg viewBox="0 0 360 190" aria-hidden="true" data-art="${p.art}"></svg>`:`<span class="big">${esc(p.glyph)}</span>`}</div>
+  <div class="body"><div class="num">${i+1}</div><div><div class="ttl">${esc(p.title)}<span class="gl">${esc(p.glyph)}</span></div><div class="ln">${esc(p.line)}</div></div></div>
+</button>`).join('');
+document.getElementById('fRows').innerHTML=PROJECTS.map((p,i)=>`<div class="frow" data-i="${i}">
+  <div class="art tone">${p.art&&K.ART[p.art]?`<svg viewBox="0 0 360 190" data-art="${p.art}"></svg>`:''}</div>
+  <div class="num">${i+1}</div><div><div class="ttl">${esc(p.title)}<span class="gl">${esc(p.glyph)}</span></div><div class="ln">${esc(p.line)}</div></div></div>`).join('');
+
+// ---- the panel
+const dlg=document.getElementById('panel');
+function openPanel(id){ const p=PROJECTS.find(x=>x.id===id); if(!p) return;
+  document.getElementById('pg').textContent=p.glyph; document.getElementById('pk').textContent=p.glyphLabel||'';
+  document.getElementById('pkind').textContent=p.kicker||''; document.getElementById('pt').textContent=p.title;
+  document.getElementById('pbody').innerHTML=(p.body||[]).map(s=>`<p>${s}</p>`).join('');      // body is trusted HTML from the array above
+  document.getElementById('pfacts').innerHTML=(p.facts||[]).map(f=>`<li>${esc(f)}</li>`).join('');
+  document.getElementById('plinks').innerHTML=(p.links||[]).map(l=>`<a href="${esc(l.href)}"${l.main?' class="main"':''}>${esc(l.label)} →</a>`).join('');
+  if(!dlg.open) dlg.showModal(); }
+grid.addEventListener('click',e=>{const c=e.target.closest('.card'); if(c) openPanel(c.dataset.id);});
+document.getElementById('px').addEventListener('click',()=>dlg.close());
+dlg.addEventListener('click',e=>{ if(e.target===dlg){ const r=dlg.getBoundingClientRect();
+  if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom) dlg.close(); }});
+
+// ---- the animation: one pure function of time
+const $=s=>document.querySelector(s);
+const badge=$('#hero .top .badge'), kick=$('.kick'), l1=$('.l1'), l2=$('.l2');
+const beatEls=[0,1,2].map(i=>document.getElementById('b'+i)), beatSvg=beatEls.map(b=>b.querySelector('svg'));
+const fP=$('#fPieces'), fRows=[...document.querySelectorAll('.frow')], fEnd=$('#fEnd'), fChip=$('#fChip'), fUrl=$('#fUrl'), cur=$('#cursor');
+const artSvgs=[...document.querySelectorAll('svg[data-art]')];
+const STARTS = FILM? [2.0,3.4,4.8] : [1.5,2.3,3.1];
+const set=(el,op,dy=0,sc=1)=>{ el.style.opacity=op.toFixed(3); el.style.transform=(dy||sc!==1)?`translateY(${dy.toFixed(1)}px) scale(${sc})`:''; el.style.visibility=op<=0.001?'hidden':'visible'; };
+const R=K.ramp;
+function render(t){
+  const s=t;                                              // sequence time
+  const out = FILM? 1-R(s,L-0.45,L-0.05) : 1;            // film: everything fades before the loop restarts
+  set(badge,R(s,0.1,0.5)*out,(1-R(s,0.1,0.5))*10); badge.style.transform+=' rotate(-4deg)';
+  set(kick,R(s,0.3,0.7)*out); set(l1,R(s,0.4,0.85)*out,(1-R(s,0.4,0.85))*14); set(l2,R(s,0.95,1.4)*out,(1-R(s,0.95,1.4))*14);
+  const beatsOut = FILM? 1-R(s,11.4,11.8) : 1;
+  beatEls.forEach((el,i)=>{ const k=R(s,STARTS[i],STARTS[i]+0.45);
+    set(el,k*beatsOut*out,(1-k)*18);
+    const u=Math.max(0,s-STARTS[i]-0.2);
+    beatSvg[i].innerHTML=K.beats[i](Math.min(u,K.BEAT_END[i]+0.01),t); });
+  artSvgs.forEach(sv=>{ sv.innerHTML=K.ART[sv.dataset.art](t); });
+  if(FILM){
+    const pOut=1-R(s,17.8,18.2);
+    set(fP,R(s,11.85,12.2)*pOut);
+    fRows.forEach((r,i)=>{ const k=R(s,12.0+0.6*i,12.45+0.6*i); set(r,k,(1-k)*22); });
+    set(fEnd,R(s,18.35,18.8)*out,(1-R(s,18.35,18.8))*16);
+    set(fUrl,(1-R(s,18.0,18.3))*R(s,0.3,0.7)*out);
+    const press=R(s,20.0,20.12)*(1-R(s,20.25,20.4));
+    fChip.style.transform=`scale(${(1-0.05*press).toFixed(3)})`; fChip.style.boxShadow=`${6-4*press}px ${6-4*press}px 0 #15171C`;
+    // the pointer: comes in from the lower right, lands on the chip, clicks
+    const km=R(s,19.0,19.9), cx=1120-km*(1120-760), cy=600-km*(600-400);
+    set(cur,R(s,18.9,19.1)*out); cur.style.transform=`translate(${cx.toFixed(1)}px,${cy.toFixed(1)}px) scale(${(1-0.1*press).toFixed(3)})`;
+  }
+}
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+window.__seek=t=>render(t);
+if(q.has('t')){ render(parseFloat(q.get('t'))); }
+else if(q.has('capture')){ render(0); }
+else if(reduce && !FILM){ render(12); }
+else { const t0=performance.now(); (function loop(){ const t=(performance.now()-t0)/1000; render(FILM? t%L : t); requestAnimationFrame(loop); })(); }
+if(q.has('panel')) openPanel(q.get('panel'));
+window.__ready=true;
+})();
+</script>
+</body>
+</html>
