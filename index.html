@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Matias: building with Claude Code, small teams of agents and a person in the loop</title>
-<meta name="description" content="Matias builds with Claude Code: small teams of agents with one craft each, reviewers that never wrote the code they review, and guards that keep a person in the loop. The pieces, in order: the setup guide and the factory.">
+<meta name="description" content="Matias builds with Claude Code: small teams of agents with one craft each, reviewers that never wrote the code they review, and guards that keep a person in the loop. The pieces, in order: the setup guide, the factory, the agent board and the travel book.">
 <link rel="icon" href="data:,">
 <script>
 /* ============================================================================================
@@ -46,6 +46,38 @@ const PROJECTS = [
     links: [
       { label: 'See it run', href: 'https://re4mat-mp.github.io/claude-setup-guide/factory/', main: true },
       { label: 'The repo', href: 'https://github.com/re4mat-mp/claude-setup-guide' }
+    ]
+  },
+  {
+    id: 'board',
+    glyph: '匠', glyphLabel: 'CRAFT',
+    title: 'The agent board',
+    line: 'A board to watch a crew of agents grow, with one Python file.',
+    kicker: 'agent-dashboard',
+    body: [
+      'How I watch the agents I work with, rebuilt with <b>an invented crew</b>: seven crafts, <b>XP that only one command can write</b>, a Lead whose level is <b>the crew\'s average</b>, and a pop-up when someone reaches a new rank.',
+      'Open the board and watch the rank-up that is waiting. Or clone it, award someone XP, and try to cheat: it refuses.'
+    ],
+    facts: ['7 invented crafts', '52 awards in the log', 'one writer of XP', '18 checks'],
+    links: [
+      { label: 'Open the board', href: 'https://re4mat-mp.github.io/agent-dashboard/', main: true },
+      { label: 'The repo', href: 'https://github.com/re4mat-mp/agent-dashboard' }
+    ]
+  },
+  {
+    id: 'travel',
+    glyph: '旅', glyphLabel: 'JOURNEY',
+    title: 'The travel book',
+    line: 'A Kindle travel book written with Claude: the method, on an invented trip',
+    kicker: 'travel-book-method',
+    body: [
+      'A travel book you write with Claude, and read on a Kindle. The method, shown on <b>an invented trip</b>: chapters, <b>plates drawn as code</b>, and <b>grey and colour editions</b>.',
+      'Turn the pages of a sample book and see what\'s underneath each one, or download the sample.'
+    ],
+    facts: ['3 invented days', '7 chapters and a cover', '3 plates drawn as code', 'grey and colour editions', 'sample.epub to download'],
+    links: [
+      { label: 'Turn the pages', href: 'https://re4mat-mp.github.io/travel-book-method/', main: true },
+      { label: 'The repo', href: 'https://github.com/re4mat-mp/travel-book-method' }
     ]
   }
 ];
@@ -150,6 +182,15 @@ const PROJECTS = [
   .frow .ttl{font-size:38px;font-weight:900;letter-spacing:-.015em;line-height:1.1}
   .frow .ttl .gl{font-size:22px;font-weight:800;color:var(--ink3);margin-left:10px}
   .frow .ln{font-size:24px;line-height:1.3;color:var(--ink2);margin-top:6px;padding-right:30px}
+  /* four rows in the film: shorter rows, art drawn at half size */
+  .frow{height:78px;margin-top:10px}
+  .frow .art{flex:0 0 148px;height:78px;display:flex;align-items:center;justify-content:center}
+  .frow .art svg{width:148px;height:78px}
+  .frow .art .big{font-size:44px;font-weight:900}
+  .frow .num{width:38px;height:38px;line-height:33px;font-size:20px}
+  .frow .ttl{font-size:30px}
+  .frow .ttl .gl{font-size:18px}
+  .frow .ln{font-size:20px;margin-top:2px}
   .fend{position:absolute;left:0;right:0;top:250px;text-align:center}
   .fend .open{font-size:58px;font-weight:900;letter-spacing:-.02em}
   .fend .chip{display:inline-block;margin-top:22px;background:var(--acc);color:#fff;border:3px solid var(--ink);border-radius:40px;box-shadow:6px 6px 0 var(--ink);
@@ -235,6 +276,13 @@ const PROJECTS = [
     <li><b><a href="https://re4mat-mp.github.io/claude-setup-guide/factory/">The factory</a></b> (工場): how I run the
       big jobs. A script cuts the work, agents read in parallel, and code checks every answer. The page runs an
       example job, with invented numbers. <a href="https://re4mat-mp.github.io/claude-setup-guide/factory/">See it run</a>.</li>
+    <li><b><a href="https://re4mat-mp.github.io/agent-dashboard/">The agent board</a></b> (匠, craft): a board to watch a
+      crew of agents grow, rebuilt with an invented crew. Seven crafts, XP that only one command can write, a Lead whose
+      level is the crew's average. <a href="https://re4mat-mp.github.io/agent-dashboard/">Open the board</a> ·
+      <a href="https://github.com/re4mat-mp/agent-dashboard">the repo</a>.</li>
+    <li><b><a href="https://re4mat-mp.github.io/travel-book-method/">The travel book</a></b> (旅, a journey): a Kindle
+      travel book written with Claude, the method shown on an invented trip. <a href="https://re4mat-mp.github.io/travel-book-method/">Turn the pages</a> ·
+      <a href="https://github.com/re4mat-mp/travel-book-method">the repo</a>.</li>
   </ol>
 </section>
 <footer>Back to the profile: <a href="https://github.com/re4mat-mp">github.com/re4mat-mp</a></footer>
@@ -254,7 +302,7 @@ grid.innerHTML=PROJECTS.map((p,i)=>`<button class="card" data-id="${p.id}" aria-
   <div class="body"><div class="num">${i+1}</div><div><div class="ttl">${esc(p.title)}<span class="gl">${esc(p.glyph)}</span></div><div class="ln">${esc(p.line)}</div></div></div>
 </button>`).join('');
 document.getElementById('fRows').innerHTML=PROJECTS.map((p,i)=>`<div class="frow" data-i="${i}">
-  <div class="art tone">${p.art&&K.ART[p.art]?`<svg viewBox="0 0 360 190" data-art="${p.art}"></svg>`:''}</div>
+  <div class="art tone">${p.art&&K.ART[p.art]?`<svg viewBox="0 0 360 190" data-art="${p.art}"></svg>`:`<span class="big">${esc(p.glyph)}</span>`}</div>
   <div class="num">${i+1}</div><div><div class="ttl">${esc(p.title)}<span class="gl">${esc(p.glyph)}</span></div><div class="ln">${esc(p.line)}</div></div></div>`).join('');
 
 // ---- the panel
