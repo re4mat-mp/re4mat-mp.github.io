@@ -31,10 +31,10 @@ const PROJECTS = [
     art: 'box',
     kicker: 'claude-setup-guide',
     body: [
-      'The part of my setup I\'d hand to a friend: <b>agents with one craft each</b>, <b>reviewers that never wrote the code</b>, <b>guard hooks</b>, and <b>a memory that loads whole</b>.',
-      'Open the box and click any part. Or clone the repo and, in ten minutes, watch a hook stop a merge that has no human approval.'
+      'The part of my setup I\'d hand to a friend: <b>AI helpers with one job each</b>, <b>reviewers that never wrote the code</b>, <b>checks that stop a change until a person says yes</b>, and <b>notes it reads in full every time it starts</b>.',
+      'Open the box and click any part. Or copy it and, in ten minutes, watch it refuse a change that no person has approved.'
     ],
-    facts: ['5 agents', '3 guard hooks', '35 habits, one line each', '25 tests for the merge guard'],
+    facts: ['5 helpers, one job each', '3 safety checks', '35 habits, one line each', 'a person says yes last'],
     links: [
       { label: 'Open the box', href: 'https://re4mat-mp.github.io/claude-setup-guide/', main: true },
       { label: 'The repo', href: 'https://github.com/re4mat-mp/claude-setup-guide' }
@@ -44,14 +44,14 @@ const PROJECTS = [
     id: 'factory',
     glyph: '工場', glyphLabel: 'FACTORY',
     title: 'The factory',
-    line: 'How I run the big jobs: agents read in parallel, code checks every answer.',
+    line: 'How I run the big jobs: helpers read at the same time, a program checks every answer.',
     art: 'factory',
     kicker: 'part of the setup guide',
     body: [
-      'When a job is too big for one agent, it runs like a production line. <b>A script cuts the work</b>, <b>agents read in parallel</b>, and <b>code checks every answer</b> before anything leaves the line.',
-      'One rule holds it together: the models read and judge, the code counts and certifies. The page runs an example job, with invented numbers.'
+      'When a job is too big for one helper, it runs like a production line. <b>A small program cuts the work into pieces</b>, <b>several helpers read at the same time</b>, and <b>the program checks every answer</b> before anything leaves the line.',
+      'One rule holds it together: the AI reads and decides, the program does the counting. The page runs an example job, with invented numbers.'
     ],
-    facts: ['cut', 'read', 'judge', 'check', 'count'],
+    facts: ['1 cut it up', '2 read', '3 decide', '4 check', '5 count'],
     links: [
       { label: 'See it run', href: 'https://re4mat-mp.github.io/claude-setup-guide/factory/', main: true },
       { label: 'The repo', href: 'https://github.com/re4mat-mp/claude-setup-guide' }
@@ -61,13 +61,13 @@ const PROJECTS = [
     id: 'board',
     glyph: '匠', glyphLabel: 'CRAFT',
     title: 'The agent board',
-    line: 'A board to watch a crew of agents grow, with one Python file.',
+    line: 'A board to watch a crew of AI helpers grow, made of one file.',
     kicker: 'agent-dashboard',
     body: [
-      'How I watch the agents I work with, rebuilt with <b>an invented crew</b>: seven crafts, <b>XP that only one command can write</b>, a Lead whose level is <b>the crew\'s average</b>, and a pop-up when someone reaches a new rank.',
-      'Open the board and watch the rank-up that is waiting. Or clone it, award someone XP, and try to cheat: it refuses.'
+      'How I watch the AI helpers I work with, rebuilt with <b>an invented crew</b>: seven jobs, <b>points that only one command can give</b>, a leader whose level is <b>the crew\'s average</b>, and a pop-up when someone moves up a rank.',
+      'Open the board and watch the rank-up that is waiting. Or copy it, give someone points, and try to cheat: it says no.'
     ],
-    facts: ['7 invented crafts', '52 awards in the log', 'one writer of XP', '18 checks'],
+    facts: ['7 invented jobs', '52 awards so far', 'only one way to give points', '18 automatic checks'],
     links: [
       { label: 'Open the board', href: 'https://re4mat-mp.github.io/agent-dashboard/', main: true },
       { label: 'The repo', href: 'https://github.com/re4mat-mp/agent-dashboard' }
@@ -97,9 +97,9 @@ const PROJECTS = [
     kicker: 'casa-3d',
     body: [
       'An experiment: <b>two floor plans as images</b>, turned into a 3D house in the browser. Orbit it, <b>double-click a floor and walk in</b>, and drag the time of day to watch the light move.',
-      'Every wall was read off the plans, and the look <b>aimed at the still renders</b> that came with them; whatever neither says is <b>invented and listed as invented</b>. Built by two Claude Code agents in parallel against one spec, and <b>looked at in headless Chrome</b> before anything counted as done.'
+      'Every wall was read off the plans, and the look <b>aimed at the still pictures</b> that came with them; whatever neither says is <b>invented and listed as invented</b>. Built by two Claude Code helpers at the same time from one written plan, and <b>checked by looking at pictures of it</b> before anything counted as done.'
     ],
-    facts: ['2 floor plans', 'plan → lines → clay → finished', 'walk in, any hour', 'WebGPU, WebGL2 fallback', '11-step build manual'],
+    facts: ['2 floor plans', 'plan → lines → clay → finished', 'walk in, any hour', 'runs in the browser', '11-step build manual'],
     links: [
       { label: 'Walk the house', href: 'https://re4mat-mp.github.io/casa-3d/', main: true },
       { label: 'The repo', href: 'https://github.com/re4mat-mp/casa-3d' }
@@ -113,9 +113,9 @@ const PROJECTS = [
     kicker: 'grand-line',
     body: [
       'A fan game I built with Claude Code: walk a town, recruit a crew, catch sea beasts, beat two gyms. <b>No ROM, no emulator, no image files</b>: one HTML file draws every tile, sprite and letter.',
-      '<b>Four colours per object</b>, like a Game Boy Color; small art written by hand as strings, big sprites <b>composed from shapes</b>. It reads a crew\'s levels from a data file and <b>can never write back</b>. Plays on a phone too.'
+      '<b>Four colours per character</b>, like an old Game Boy; small pictures typed by hand, big ones <b>built from shapes</b>. It reads a crew\'s levels and <b>can never change them</b>. Plays on a phone too.'
     ],
-    facts: ['256×192, all by code', '21 species, 40 moves', '13 maps, 2 gyms', 'touch controls', 'unofficial fan game'],
+    facts: ['every pixel drawn by code', '21 creatures, 40 moves', '13 maps, 2 gyms', 'plays on a phone', 'unofficial fan game'],
     links: [
       { label: 'Play it', href: 'https://re4mat-mp.github.io/grand-line/', main: true },
       { label: 'The repo', href: 'https://github.com/re4mat-mp/grand-line' }
@@ -307,7 +307,7 @@ const PROJECTS = [
   </div>
   <div class="fonly fpieces" id="fPieces"><div class="k">THE PIECES, IN ORDER</div><div id="fRows"></div></div>
   <div class="fonly fend" id="fEnd"><div class="open">Open the portfolio →</div><div class="chip" id="fChip">re4mat-mp.github.io</div>
-    <div class="sub">Every piece opens: click a card, then its page.</div><svg class="who" id="fWho" viewBox="0 0 120 130" aria-hidden="true"></svg></div>
+    <div class="sub">Every piece opens: click a card for the whole story, or its link to go straight in.</div><svg class="who" id="fWho" viewBox="0 0 120 130" aria-hidden="true"></svg></div>
   <div class="fonly furl" id="fUrl">re4mat-mp.github.io</div>
   <svg class="fonly" id="cursor" viewBox="0 0 34 44"><path d="M3,3 L3,35 L11,28 L17,41 L23,38 L17,25 L28,25 Z" fill="#fff" stroke="#15171C" stroke-width="3" stroke-linejoin="round"/></svg>
 </header>
