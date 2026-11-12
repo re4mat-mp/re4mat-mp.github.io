@@ -19,6 +19,8 @@ and guards that keep a person in the loop before anything ships. Every piece ope
    with Claude, the method shown on an invented trip. [The repo](https://github.com/re4mat-mp/travel-book-method).
 5. **[The house](https://re4mat-mp.github.io/casa-3d/)** (家, a house): two floor plans turned into a 3D
    house you can walk through in the browser. [The repo](https://github.com/re4mat-mp/casa-3d).
+6. **[The game](https://re4mat-mp.github.io/grand-line/)** (航海, a voyage): a Game Boy-style RPG where every pixel is
+   drawn by code, playable in the browser. An unofficial fan game. [The repo](https://github.com/re4mat-mp/grand-line).
 
 Back to the profile: [github.com/re4mat-mp](https://github.com/re4mat-mp)
 
