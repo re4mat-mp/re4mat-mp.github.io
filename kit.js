@@ -162,7 +162,7 @@ function beatGuard(u,t){ // a PR reaches main; the guard says wait; a person app
   const k1=ramp(u,0,0.55), k2=ramp(u,3.0,3.7);
   let px=96+k1*44 + k2*(316-140), op2=1-ramp(u,3.55,3.8);
   if(op2>0) g+=`<g opacity="${r2(op2)}">`+pr(px,146,{rot:k2>0?0:-4})+`</g>`;
-  const wait=u>0.55&&u<2.35;
+  const wait=u>0.55&&u<2.25;   // "wait" is gone the moment "approved" starts, so the two stickers never sit on top of each other
   g+=bot(198,122,t,{arm:wait?1:0});
   g+=tag(198,166,'guard hook');
   if(wait) g+=`<g transform="translate(150,40) rotate(-6)"><rect x="3" y="3" width="64" height="26" rx="5" fill="${INK}"/><rect width="64" height="26" rx="5" fill="#fff" stroke="${INK}" stroke-width="2.4"/><text x="32" y="18.5" text-anchor="middle" font-size="14" font-weight="900" font-style="italic" font-family="${F}" fill="${INK}">wait</text></g>`;
