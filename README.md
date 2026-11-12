@@ -17,6 +17,8 @@ and guards that keep a person in the loop before anything ships. Every piece ope
    grow, rebuilt with an invented crew. [The repo](https://github.com/re4mat-mp/agent-dashboard).
 4. **[The travel book](https://re4mat-mp.github.io/travel-book-method/)** (旅, a journey): a Kindle travel book written
    with Claude, the method shown on an invented trip. [The repo](https://github.com/re4mat-mp/travel-book-method).
+5. **[The house](https://re4mat-mp.github.io/casa-3d/)** (家, a house): two floor plans turned into a 3D
+   house you can walk through in the browser. [The repo](https://github.com/re4mat-mp/casa-3d).
 
 Back to the profile: [github.com/re4mat-mp](https://github.com/re4mat-mp)
 
