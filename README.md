@@ -5,7 +5,7 @@ The front door to my projects. **[Open it](https://re4mat-mp.github.io/)**.
 [![Hi, I'm Matias. I build with Claude Code: small teams of agents, reviewers that never wrote the code, guards that keep a person in the loop](welcome.gif)](https://re4mat-mp.github.io/)
 
 I build with Claude Code: small teams of agents with one craft each, reviewers that never wrote the code they review,
-and guards that keep a person in the loop before anything ships. Every piece opens: click a card, then its page.
+and guards that keep a person in the loop before anything ships. Every piece opens: click a card for the whole story, or its link to go straight in.
 
 **The pieces, in order**
 

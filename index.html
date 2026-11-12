@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Matias: building with Claude Code, small teams of agents and a person in the loop</title>
-<meta name="description" content="Matias builds with Claude Code: small teams of agents with one craft each, reviewers that never wrote the code they review, and guards that keep a person in the loop. The pieces, in order: the setup guide, the factory, the agent board, the travel book and the house.">
+<meta name="description" content="Matias builds with Claude Code: small teams of agents with one craft each, reviewers that never wrote the code they review, and guards that keep a person in the loop. The pieces, in order: the setup guide, the factory, the agent board, the travel book, the house and the game.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://re4mat-mp.github.io/">
 <meta property="og:title" content="Matias: building with Claude Code, small teams of agents and a person in the loop">
-<meta property="og:description" content="The setup guide, the factory, the agent board, the travel book and the house: small teams of agents with one craft each, and a person in the loop.">
+<meta property="og:description" content="The setup guide, the factory, the agent board, the travel book, the house and the game: small teams of agents with one craft each, and a person in the loop.">
 <meta property="og:image" content="https://re4mat-mp.github.io/welcome.png">
 <meta property="og:image:width" content="2560">
 <meta property="og:image:height" content="1280">
@@ -19,7 +19,8 @@
    THE PROJECTS. One entry per card, in the order they are shown (and in the GIF).
    To add one: copy an entry, fill it in, and add the same project to the "Text version" list
    at the bottom of this file (it is plain HTML so it reads with JavaScript off).
-   art: 'box' | 'factory' draws a picture from kit.js; leave it out and the card shows the glyph big.
+   art: 'box' | 'factory' draws a picture from kit.js; leave it out and the card shows the kanji badge with its word.
+   links[0] (main) is the card's own way in, under its title; the panel holds the whole story.
    ============================================================================================ */
 const PROJECTS = [
   {
@@ -156,13 +157,26 @@ const PROJECTS = [
   #pieces h2{margin:0;font-size:15px;font-weight:800;letter-spacing:.06em;color:var(--ink3);text-transform:uppercase}
   #pieces .hint{margin:4px 0 0;font-size:16px;color:var(--ink3)}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:28px;margin-top:20px}
-  .card{all:unset;box-sizing:border-box;position:relative;display:flex;flex-direction:column;cursor:pointer;border:2.5px solid var(--ink);border-radius:14px;
-    background:#fff;box-shadow:5px 5px 0 var(--ink);transition:transform .15s,box-shadow .15s;animation:deal .5s both}
+  .card{box-sizing:border-box;position:relative;display:flex;flex-direction:column;cursor:pointer;border:2.5px solid var(--ink);border-radius:14px;
+    background:#fff;box-shadow:5px 5px 0 var(--ink);transition:transform .15s,box-shadow .15s;animation:deal .5s both;scroll-margin-top:24px}
   .card:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
-  .card:focus-visible{outline:3px solid var(--acc);outline-offset:4px}
+  .card:has(.open:focus-visible){outline:3px solid var(--acc);outline-offset:4px}
+  /* the whole card opens the panel (the button's ::after covers it); the verb link sits above and goes straight in */
+  .card .open{all:unset;cursor:pointer}
+  .card .open::after{content:'';position:absolute;inset:0;border-radius:12px}
+  .card .go{position:relative;z-index:1;display:inline-block;margin-top:10px;font-size:16px;font-weight:850}
+  .card .go:hover{text-decoration-thickness:3px}
+  /* the kanji badge on the four cards without a drawing: same shape as the 玄関 one, and it stamps on hover */
+  .cbadge{width:118px;height:118px;box-sizing:border-box;border:3px solid var(--ink);border-radius:18px;box-shadow:5px 5px 0 var(--ink);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-4deg);line-height:1}
+  .cbadge .g{font-size:50px;font-weight:900;letter-spacing:-.02em}
+  .cbadge.two .g{font-size:42px}
+  .cbadge .k{font-size:12px;font-weight:800;letter-spacing:.08em;margin-top:8px}
+  .card:hover .cbadge,.card:has(.open:focus-visible) .cbadge{animation:stamp .55s both}
+  @keyframes stamp{0%{transform:rotate(-4deg)}35%{transform:translate(-4px,-9px) rotate(-9deg);box-shadow:10px 13px 0 var(--ink)}
+    70%{transform:translate(2px,2px) rotate(-4deg) scale(.97);box-shadow:1px 1px 0 var(--ink)}100%{transform:rotate(-4deg);box-shadow:5px 5px 0 var(--ink)}}
   .card .art{border-bottom:2.5px solid var(--ink);border-radius:11px 11px 0 0;overflow:hidden;aspect-ratio:360/190;display:flex;align-items:center;justify-content:center}
   .card .art svg{display:block;width:100%;height:100%}
-  .card .art .big{font-size:84px;font-weight:900}
   .card .body{padding:14px 18px 18px;display:flex;gap:14px;align-items:flex-start}
   .card .num{flex:0 0 auto;width:30px;height:30px;border:2.4px solid var(--ink);border-radius:15px;text-align:center;line-height:26px;font-size:16px;font-weight:900}
   .card .ttl{font-size:22px;font-weight:900;letter-spacing:-.01em;line-height:1.15}
@@ -191,6 +205,10 @@ const PROJECTS = [
   #panel .links a:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
   #panel .x{all:unset;position:absolute;right:14px;top:12px;width:36px;height:36px;border:2.5px solid var(--ink);border-radius:18px;background:#fff;font-size:20px;font-weight:900;line-height:34px;text-align:center;cursor:pointer}
   #panel .x:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+  #panel .pnav{display:flex;justify-content:space-between;gap:12px;margin-top:22px;padding-top:14px;border-top:2px dashed var(--ink4)}
+  #panel .pnav button{all:unset;cursor:pointer;font-size:15px;font-weight:800;color:var(--ink2)}
+  #panel .pnav button:hover,#panel .pnav button:focus-visible{color:var(--ink);text-decoration:underline;text-decoration-color:var(--acc);text-decoration-thickness:2px;text-underline-offset:3px}
+  #panel .pnav .nx{margin-left:auto;text-align:right}
 
   /* ---------- text version ---------- */
   #text{max-width:720px;margin:0 auto;padding:40px 20px 24px;box-sizing:border-box;font-size:16px;line-height:1.55;color:var(--ink2)}
@@ -266,7 +284,7 @@ const PROJECTS = [
     #panel p{font-size:16px}
     .plus{right:10px;top:10px}
   }
-  @media (prefers-reduced-motion:reduce){.card{animation:none}}
+  @media (prefers-reduced-motion:reduce){.card,.card .cbadge{animation:none!important}}
 </style>
 <noscript><style>.beats,#pieces{display:none}</style></noscript>
 </head>
@@ -296,7 +314,7 @@ const PROJECTS = [
 
 <section id="pieces" aria-labelledby="ph">
   <h2 id="ph">The pieces, in order</h2>
-  <p class="hint">Click a card to open it.</p>
+  <p class="hint">Click a card for the whole story, or its link to go straight in.</p>
   <div class="grid" id="grid"></div>
 </section>
 
@@ -307,6 +325,7 @@ const PROJECTS = [
   <div id="pbody"></div>
   <ul class="facts" id="pfacts"></ul>
   <div class="links" id="plinks"></div>
+  <nav class="pnav" id="pnav" aria-label="Other pieces"></nav>
 </dialog>
 
 <section id="text" aria-labelledby="tv">
@@ -353,11 +372,14 @@ if(FILM) document.body.classList.add('film');
 
 // ---- build the cards (page) and the rows (film) from PROJECTS
 const grid=document.getElementById('grid');
-grid.innerHTML=PROJECTS.map((p,i)=>`<button class="card" data-id="${p.id}" aria-haspopup="dialog" style="animation-delay:${0.15+i*0.12}s">
+grid.innerHTML=PROJECTS.map((p,i)=>{ const go=(p.links||[]).find(l=>l.main);
+  return `<article class="card" id="${p.id}" data-id="${p.id}" style="animation-delay:${0.15+i*0.12}s">
   <span class="plus" aria-hidden="true">+</span>
-  <div class="art tone">${p.art&&K.ART[p.art]?`<svg viewBox="0 0 360 190" aria-hidden="true" data-art="${p.art}"></svg>`:`<span class="big">${esc(p.glyph)}</span>`}</div>
-  <div class="body"><div class="num">${i+1}</div><div><div class="ttl">${esc(p.title)}<span class="gl">${esc(p.glyph)}</span></div><div class="ln">${esc(p.line)}</div></div></div>
-</button>`).join('');
+  <div class="art tone">${p.art&&K.ART[p.art]?`<svg viewBox="0 0 360 190" aria-hidden="true" data-art="${p.art}"></svg>`
+    :`<span class="cbadge tone-acc${[...p.glyph].length>1?' two':''}" aria-hidden="true"><span class="g">${esc(p.glyph)}</span><span class="k">${esc(p.glyphLabel||'')}</span></span>`}</div>
+  <div class="body"><div class="num">${i+1}</div><div><div class="ttl"><button class="open" data-id="${p.id}" aria-haspopup="dialog">${esc(p.title)}</button><span class="gl" aria-hidden="true">${esc(p.glyph)}</span></div><div class="ln">${esc(p.line)}</div>
+    ${go?`<a class="go" href="${esc(go.href)}">${esc(go.label)} →</a>`:''}</div></div>
+</article>`; }).join('');
 document.getElementById('fRows').innerHTML=PROJECTS.map((p,i)=>`<div class="frow" data-i="${i}">
   <div class="fbadge tone-acc" aria-hidden="true"><span class="g">${esc(p.glyph)}</span><span class="k">${esc(p.glyphLabel||'')}</span></div>
   <div class="num">${i+1}</div><div><div class="ttl">${esc(p.title)}</div><div class="ln">${esc(p.line)}</div></div></div>`).join('');
@@ -373,8 +395,18 @@ function openPanel(id){ const p=PROJECTS.find(x=>x.id===id); if(!p) return;
   document.getElementById('pbody').innerHTML=(p.body||[]).map(s=>`<p>${s}</p>`).join('');      // body is trusted HTML from the array above
   document.getElementById('pfacts').innerHTML=(p.facts||[]).map(f=>`<li>${esc(f)}</li>`).join('');
   document.getElementById('plinks').innerHTML=(p.links||[]).map(l=>`<a href="${esc(l.href)}"${l.main?' class="main"':''}>${esc(l.label)} →</a>`).join('');
+  // walk the pieces without closing: the one before and the one after, numbered as on the cards
+  const i=PROJECTS.indexOf(p), pv=PROJECTS[i-1], nx=PROJECTS[i+1];
+  document.getElementById('pnav').innerHTML=(pv?`<button class="pv" data-go="${pv.id}">← ${i} · ${esc(pv.title)}</button>`:'')
+    +(nx?`<button class="nx" data-go="${nx.id}">${i+2} · ${esc(nx.title)} →</button>`:'');
+  if(!FILM && !q.has('capture')) history.replaceState(null,'','#'+p.id);   // a piece's panel has its own address
   if(!dlg.open) dlg.showModal(); }
-grid.addEventListener('click',e=>{const c=e.target.closest('.card'); if(c) openPanel(c.dataset.id);});
+grid.addEventListener('click',e=>{ if(e.target.closest('a')) return; const c=e.target.closest('.card'); if(c) openPanel(c.dataset.id);});
+document.getElementById('pnav').addEventListener('click',e=>{const b=e.target.closest('[data-go]'); if(b) openPanel(b.dataset.go);});
+dlg.addEventListener('keydown',e=>{ const b=document.querySelector(e.key==='ArrowLeft'?'#pnav .pv':e.key==='ArrowRight'?'#pnav .nx':null); if(b){ e.preventDefault(); b.click(); }});
+dlg.addEventListener('close',()=>{ if(PROJECTS.some(p=>'#'+p.id===location.hash)) history.replaceState(null,'',location.pathname+location.search); });
+const fromHash=()=>{ const h=location.hash.slice(1); if(PROJECTS.some(p=>p.id===h)) openPanel(h); };
+addEventListener('hashchange',fromHash);
 document.getElementById('px').addEventListener('click',()=>dlg.close());
 dlg.addEventListener('click',e=>{ if(e.target===dlg){ const r=dlg.getBoundingClientRect();
   if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom) dlg.close(); }});
@@ -392,7 +424,7 @@ const fWho=document.getElementById('fWho');
 /* Film timeline (s = film seconds, loop L=23). The header never moves in the film: only the stage below it changes,
    and every change is a cross-fade, so no frame is empty.
      0.2–5.8   the three beats draw themselves (beat 3 finishes at 5.8) · held still until 10.9
-     10.9–11.2 beats out, THEN pieces in (never both: no word crosses another) · rows deal 11.35–12.8 · all five still until 17.8
+     10.9–11.2 beats out, THEN pieces in (never both: no word crosses another) · rows deal 11.35–12.8 · all six still until 17.8
      17.8–18.1 pieces out, THEN 18.15–18.5 end card in · pointer clicks at 19.9 · held still until 22.4
      22.4–22.7 end card out, THEN 22.7–23.0 the empty beat frames come back (they are already there at s=0)
    The GIF starts at s=6.0 (finished welcome), so its first frame is the full picture. */
@@ -403,7 +435,6 @@ function render(t){
     set(kick,R(s,0.3,0.7)); set(l1,R(s,0.4,0.85),(1-R(s,0.4,0.85))*14); set(l2,R(s,0.95,1.4),(1-R(s,0.95,1.4))*14);
     beatEls.forEach((el,i)=>{ const k=R(s,STARTS[i],STARTS[i]+0.45); set(el,k,(1-k)*18);
       const u=Math.max(0,s-STARTS[i]-0.2); beatSvg[i].innerHTML=K.beats[i](Math.min(u,K.BEAT_END[i]+0.01),t); });
-    artSvgs.forEach(sv=>{ sv.innerHTML=K.ART[sv.dataset.art](t); });
     return;
   }
   set(badge,1); badge.style.transform='rotate(-4deg)'; set(kick,1); set(l1,1); set(l2,1);
@@ -426,11 +457,30 @@ function render(t){
 }
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 window.__seek=t=>render(t);
+
+// ---- the two card drawings: a still frame (the stamp is down), and they play only while you point at them or focus them
+const STILL=0.65;
+artSvgs.forEach(sv=>{ const draw=t=>{ sv.innerHTML=K.ART[sv.dataset.art](t); }, card=sv.closest('.card'); let raf=0;
+  draw(STILL);
+  const play=()=>{ if(reduce||raf) return; const s0=performance.now(); const f=n=>{ draw(STILL+(n-s0)/1000); raf=requestAnimationFrame(f); }; raf=requestAnimationFrame(f); };
+  const stop=()=>{ cancelAnimationFrame(raf); raf=0; draw(STILL); };
+  card.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse') play(); });
+  card.addEventListener('pointerleave',stop); card.addEventListener('focusin',play); card.addEventListener('focusout',stop); });
+
+// ---- the welcome clock. The intro runs at full rate; after it, the crew only breathes and blinks, so a few frames a
+//      second are enough, and nothing is drawn while the welcome is off screen or the tab is hidden.
+const INTRO=7.4, IDLE_MS=80;
 if(q.has('t')){ render(parseFloat(q.get('t'))); }
 else if(q.has('capture')){ render(0); }
 else if(reduce && !FILM){ render(12); }
-else { const t0=performance.now(); (function loop(){ const t=(performance.now()-t0)/1000; render(FILM? t%L : t); requestAnimationFrame(loop); })(); }
-if(q.has('panel')) openPanel(q.get('panel'));
+else { const t0=performance.now(); let raf=0, last=-1e9, heroOn=true;
+  const tick=now=>{ raf=0; const t=(now-t0)/1000;
+    if(FILM) render(t%L); else if(t<INTRO || now-last>=IDLE_MS){ render(t); last=now; }
+    schedule(); };
+  const schedule=()=>{ if(!raf && (FILM||heroOn)) raf=requestAnimationFrame(tick); };
+  render(0); schedule();
+  if(!FILM && 'IntersectionObserver' in window) new IntersectionObserver(es=>{ heroOn=es[0].isIntersecting; schedule(); }).observe(document.getElementById('hero')); }
+if(q.has('panel')) openPanel(q.get('panel')); else fromHash();
 window.__ready=true;
 })();
 </script>
