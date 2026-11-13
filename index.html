@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Matias: building with Claude Code, small teams of agents and a person in the loop</title>
-<meta name="description" content="Matias builds with Claude Code: small teams of agents with one craft each, reviewers that never wrote the code they review, and guards that keep a person in the loop. The pieces, in order: the setup guide, the factory, the agent board, the travel book, the house and the game.">
+<meta name="description" content="Matias builds with Claude Code: small teams of agents with one craft each, reviewers that never wrote the code they review, and guards that keep a person in the loop. The pieces, in order: the setup guide, the factory, the agent board, the travel book, the house, the game and the music class.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://re4mat-mp.github.io/">
 <meta property="og:title" content="Matias: building with Claude Code, small teams of agents and a person in the loop">
-<meta property="og:description" content="The setup guide, the factory, the agent board, the travel book, the house and the game: small teams of agents with one craft each, and a person in the loop.">
+<meta property="og:description" content="The setup guide, the factory, the agent board, the travel book, the house, the game and the music class: small teams of agents with one craft each, and a person in the loop.">
 <meta property="og:image" content="https://re4mat-mp.github.io/welcome.png">
 <meta property="og:image:width" content="2560">
 <meta property="og:image:height" content="1280">
@@ -119,6 +119,22 @@ const PROJECTS = [
     links: [
       { label: 'Play it', href: 'https://re4mat-mp.github.io/grand-line/', main: true },
       { label: 'The repo', href: 'https://github.com/re4mat-mp/grand-line' }
+    ]
+  },
+  {
+    id: 'music',
+    glyph: '音楽', glyphLabel: 'MUSIC',
+    title: 'The music class',
+    line: 'A class to practise with a Push 3 in your hands, every sound made in the browser.',
+    kicker: 'profe-push',
+    body: [
+      'A music class I made with Claude to learn my own instrument, the Ableton Push 3. <b>The pads on screen are laid out the way the Push shows them</b>, and every note says why it is there.',
+      'Five rooms: <b>chords</b>, <b>drums</b>, <b>layers</b>, <b>from loop to song</b> and <b>DJ ear games</b>. <b>No samples</b>: every sound is made in the browser. The class itself is in Spanish.'
+    ],
+    facts: ['5 rooms', '8 drum styles', '4 DJ ear games', 'no samples', 'the class is in Spanish'],
+    links: [
+      { label: 'Open the class', href: 'https://re4mat-mp.github.io/profe-push/', main: true },
+      { label: 'The repo', href: 'https://github.com/re4mat-mp/profe-push' }
     ]
   }
 ];
@@ -325,8 +341,8 @@ const PROJECTS = [
     <svg class="crew" id="crew" viewBox="0 30 300 160" role="img" aria-label="Me, a person, between a square robot and a round agent: the crew I build with"></svg>
     <div>
       <div class="rk" id="rk">WHAT I MAKE</div>
-      <p class="rl">A Claude Code setup, a factory for big jobs, a board for a crew of agents, a travel book, a house you can walk through, a game. <b>All made with Claude.</b></p>
-      <nav class="stamps" id="stamps" aria-label="The six pieces"></nav>
+      <p class="rl">A Claude Code setup, a factory for big jobs, a board for a crew of agents, a travel book, a house you can walk through, a game, a music class. <b>All made with Claude.</b></p>
+      <nav class="stamps" id="stamps" aria-label="The seven pieces"></nav>
     </div>
   </section>
   <div class="beats">
@@ -367,7 +383,7 @@ const PROJECTS = [
   <p><strong>Hi, I'm Matias.</strong> I build with Claude Code: small teams of agents with one craft each, reviewers
     that never wrote the code they review, and guards that keep a person in the loop before anything ships.</p>
   <p>What I make: a Claude Code setup, a factory for big jobs, a board for a crew of agents, a travel book, a house you
-    can walk through, a game. All made with Claude. Every piece here opens: each one has a page you can click through.</p>
+    can walk through, a game, a music class. All made with Claude. Every piece here opens: each one has a page you can click through.</p>
   <h3>The pieces, in order</h3>
   <ol>
     <li><b><a href="https://re4mat-mp.github.io/claude-setup-guide/">The setup guide</a></b> (箱, the box): my Claude Code
@@ -392,6 +408,11 @@ const PROJECTS = [
       where every pixel is drawn by code. No ROM, no emulator, no image files; it plays on a phone too. An unofficial
       fan game. <a href="https://re4mat-mp.github.io/grand-line/">Play it</a> ·
       <a href="https://github.com/re4mat-mp/grand-line">the repo</a>.</li>
+    <li><b><a href="https://re4mat-mp.github.io/profe-push/">The music class</a></b> (音楽, music): a class to practise
+      with an Ableton Push 3 in your hands, the pads drawn the way the Push shows them. Chords, drums, layers, from loop
+      to song, and DJ ear games; every sound is made in the browser, and the class is in Spanish.
+      <a href="https://re4mat-mp.github.io/profe-push/">Open the class</a> ·
+      <a href="https://github.com/re4mat-mp/profe-push">the repo</a>.</li>
   </ol>
 </section>
 <footer>Back to the profile: <a href="https://github.com/re4mat-mp">github.com/re4mat-mp</a></footer>
@@ -455,7 +476,7 @@ const fP=$('#fPieces'), fRows=[...document.querySelectorAll('.frow')], fEnd=$('#
 const artSvgs=[...document.querySelectorAll('svg[data-art]')];
 const STARTS = FILM? [0.2,1.0,1.8] : [2.6,3.4,4.2];     // on the page the stamps land first (1.5–2.9), then the beats
 const crew=document.getElementById('crew');
-// the crew: a square robot (code), me (a person: neither round nor square), a round agent (a model). I cheer once the six stamps are down.
+// the crew: a square robot (code), me (a person: neither round nor square), a round agent (a model). I cheer once the stamps are down.
 function drawCrew(t){ const k=R(t,0.5,1.1), dy=(1-k)*14, up=t>2.9&&t<4.4;
   crew.style.opacity=k.toFixed(3);
   crew.innerHTML=`<g transform="translate(150,112) rotate(-4)" opacity="${(0.25+0.75*R(t,0.3,0.9)).toFixed(3)}"><text x="0" y="50" text-anchor="middle" font-size="140" font-weight="900" font-family="${K.F}" fill="${K.ACC_L}">作</text></g>
