@@ -152,6 +152,25 @@ const PROJECTS = [
   .beat figcaption b{color:var(--ink);font-weight:850}
   .beat .n{display:inline-block;width:26px;height:26px;border:2.2px solid var(--ink);border-radius:13px;text-align:center;line-height:23px;font-size:15px;font-weight:900;color:var(--ink);margin-right:8px;vertical-align:2px;background:#fff}
 
+  /* ---------- the range: one panel that says, at a glance, everything I make ---------- */
+  .range{position:relative;display:grid;grid-template-columns:300px 1fr;gap:10px 30px;align-items:center;margin:30px 0 0;padding:16px 26px 18px 18px;
+    border:2.5px solid var(--ink);border-radius:14px;background:#fff;box-shadow:5px 5px 0 var(--ink)}
+  .range .crew{display:block;width:300px;height:160px}
+  .range .rk{font-size:13px;font-weight:800;letter-spacing:.07em;color:var(--ink3)}
+  .range .rl{margin:6px 0 0;font-size:clamp(20px,2.1vw,27px);font-weight:850;line-height:1.22;letter-spacing:-.01em}
+  .range .rl b{font-weight:900;background:linear-gradient(transparent 62%,var(--acc-l) 62%)}
+  .stamps{display:flex;flex-wrap:wrap;gap:14px 16px;margin-top:16px}
+  .stamp{width:82px;height:82px;box-sizing:border-box;border:2.6px solid var(--ink);border-radius:14px;box-shadow:4px 4px 0 var(--ink);color:var(--ink);text-decoration:none;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;transform:rotate(var(--r));animation:press .42s both;transition:transform .12s,box-shadow .12s}
+  .stamp .g{font-size:32px;font-weight:900;letter-spacing:-.03em}
+  .stamp.two .g{font-size:26px}
+  .stamp .k{font-size:9.5px;font-weight:800;letter-spacing:.07em;margin-top:6px}
+  .stamp:hover,.stamp:focus-visible{transform:translate(-2px,-3px) rotate(calc(var(--r) * -1));box-shadow:6px 7px 0 var(--ink)}
+  .stamp:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+  @keyframes press{0%{opacity:0;transform:translateY(-26px) rotate(calc(var(--r) - 12deg)) scale(1.25);box-shadow:14px 18px 0 rgba(21,23,28,.25)}
+    70%{opacity:1;transform:translateY(2px) rotate(var(--r)) scale(.96);box-shadow:1px 1px 0 var(--ink)}100%{transform:rotate(var(--r));box-shadow:4px 4px 0 var(--ink)}}
+  body.film .range{display:none}
+
   /* ---------- the pieces ---------- */
   #pieces{max-width:1200px;margin:0 auto;padding:30px 40px 10px;box-sizing:border-box}
   #pieces h2{margin:0;font-size:15px;font-weight:800;letter-spacing:.06em;color:var(--ink3);text-transform:uppercase}
@@ -274,6 +293,11 @@ const PROJECTS = [
     .badge .g{font-size:30px}.badge .k{font-size:9px;margin-top:4px}
     .kick{font-size:13px}
     .beats{grid-template-columns:1fr;gap:18px;margin-top:24px}
+    .range{grid-template-columns:1fr;padding:12px 14px 16px;margin-top:20px}
+    .range .crew{width:100%;max-width:250px;height:auto;aspect-ratio:300/160;margin:0 auto}
+    .stamps{flex-wrap:nowrap;gap:6px;justify-content:space-between}
+    .stamp{width:46px;height:46px;border-width:2.2px;border-radius:9px;box-shadow:3px 3px 0 var(--ink)}
+    .stamp .g{font-size:19px}.stamp.two .g{font-size:14px}.stamp .k{font-size:5.6px;margin-top:3px;letter-spacing:.03em}
     .beat{display:grid;grid-template-columns:52% 1fr;gap:14px;align-items:center}
     .beat figcaption{margin:0;font-size:16px}
     .beat .n{display:block;margin:0 0 6px}
@@ -284,7 +308,7 @@ const PROJECTS = [
     #panel p{font-size:16px}
     .plus{right:10px;top:10px}
   }
-  @media (prefers-reduced-motion:reduce){.card,.card .cbadge{animation:none!important}}
+  @media (prefers-reduced-motion:reduce){.card,.card .cbadge,.stamp{animation:none!important}}
 </style>
 <noscript><style>.beats,#pieces{display:none}</style></noscript>
 </head>
@@ -297,6 +321,14 @@ const PROJECTS = [
       <h1><span class="l1">Hi, I'm Matias.</span> <span class="l2">I build with <b>Claude Code</b>.</span></h1>
     </div>
   </div>
+  <section class="range" aria-labelledby="rk">
+    <svg class="crew" id="crew" viewBox="0 30 300 160" role="img" aria-label="Me, a person, between a round agent and a square robot: the crew I build with"></svg>
+    <div>
+      <div class="rk" id="rk">WHAT I MAKE</div>
+      <p class="rl">Tools for work, <b>teams of agents</b>, a game, a house you can walk through, a travel book. <b>All made with Claude.</b></p>
+      <nav class="stamps" id="stamps" aria-label="The six pieces"></nav>
+    </div>
+  </section>
   <div class="beats">
     <figure class="beat" id="b0"><div class="art tone"><svg viewBox="0 0 360 190" role="img" aria-label="Four agents, each holding the tool of its craft, and a swarm of small readers"></svg></div>
       <figcaption><span class="n">1</span><b>Small teams of agents</b>, one craft each</figcaption></figure>
@@ -383,6 +415,9 @@ grid.innerHTML=PROJECTS.map((p,i)=>{ const go=(p.links||[]).find(l=>l.main);
 document.getElementById('fRows').innerHTML=PROJECTS.map((p,i)=>`<div class="frow" data-i="${i}">
   <div class="fbadge tone-acc" aria-hidden="true"><span class="g">${esc(p.glyph)}</span><span class="k">${esc(p.glyphLabel||'')}</span></div>
   <div class="num">${i+1}</div><div><div class="ttl">${esc(p.title)}</div><div class="ln">${esc(p.line)}</div></div></div>`).join('');
+// the range: one stamp per piece, pressed in one after another; each opens that piece's card
+const rot=[-4,3,-2,4,-3,2];
+document.getElementById('stamps').innerHTML=PROJECTS.map((p,i)=>`<a class="stamp tone-acc${[...p.glyph].length>1?' two':''}" href="#${p.id}" style="--r:${rot[i%6]}deg;animation-delay:${(1.5+i*0.2).toFixed(2)}s" aria-label="${esc(p.title)}"><span class="g" aria-hidden="true">${esc(p.glyph)}</span><span class="k" aria-hidden="true">${esc(p.glyphLabel||'')}</span></a>`).join('');
 // film: each caption breaks after its bold words, so no line ends on a lone "one" or "the"
 if(FILM) [['Small teams of agents',',','one craft each'],['Reviewers','','that never wrote the code'],['Guards','','that keep a person in the loop']]
   .forEach(([b,c,rest],i)=>{ document.querySelector('#b'+i+' figcaption').innerHTML=`<span class="n">${i+1}</span><b>${b}</b>${c}<br>${rest}`; });
@@ -417,7 +452,14 @@ const badge=$('#hero .top .badge'), kick=$('.kick'), l1=$('.l1'), l2=$('.l2');
 const beatEls=[0,1,2].map(i=>document.getElementById('b'+i)), beatSvg=beatEls.map(b=>b.querySelector('svg'));
 const fP=$('#fPieces'), fRows=[...document.querySelectorAll('.frow')], fEnd=$('#fEnd'), fChip=$('#fChip'), fUrl=$('#fUrl'), cur=$('#cursor');
 const artSvgs=[...document.querySelectorAll('svg[data-art]')];
-const STARTS = FILM? [0.2,1.0,1.8] : [1.5,2.3,3.1];
+const STARTS = FILM? [0.2,1.0,1.8] : [2.6,3.4,4.2];     // on the page the stamps land first (1.5–2.9), then the beats
+const crew=document.getElementById('crew');
+// the crew: a square robot (code), me (a person: neither round nor square), a round agent (a model). I cheer once the six stamps are down.
+function drawCrew(t){ const k=R(t,0.5,1.1), dy=(1-k)*14, up=t>2.9&&t<4.4;
+  crew.style.opacity=k.toFixed(3);
+  crew.innerHTML=`<g transform="translate(150,112) rotate(-4)" opacity="${(0.25+0.75*R(t,0.3,0.9)).toFixed(3)}"><text x="0" y="50" text-anchor="middle" font-size="140" font-weight="900" font-family="${K.F}" fill="${K.ACC_L}">作</text></g>
+     <ellipse cx="150" cy="176" rx="132" ry="9" fill="rgba(21,23,28,.08)"/>`
+   +K.bot(62,126+dy,t,{s:1.25,arm:up?1:0})+K.human(150,112+dy,t,{s:1.45,cheer:up})+K.worker(238,126+dy,t,{hat:'O',s:1.3,pose:up?'cheer':'idle',look:-1.5}); }
 const set=(el,op,dy=0,sc=1)=>{ el.style.opacity=op.toFixed(3); el.style.transform=(dy||sc!==1)?`translateY(${dy.toFixed(1)}px) scale(${sc})`:''; el.style.visibility=op<=0.001?'hidden':'visible'; };
 const R=K.ramp;
 const fWho=document.getElementById('fWho');
@@ -433,6 +475,7 @@ function render(t){
   if(!FILM){
     set(badge,R(s,0.1,0.5),(1-R(s,0.1,0.5))*10); badge.style.transform+=' rotate(-4deg)';
     set(kick,R(s,0.3,0.7)); set(l1,R(s,0.4,0.85),(1-R(s,0.4,0.85))*14); set(l2,R(s,0.95,1.4),(1-R(s,0.95,1.4))*14);
+    drawCrew(s);
     beatEls.forEach((el,i)=>{ const k=R(s,STARTS[i],STARTS[i]+0.45); set(el,k,(1-k)*18);
       const u=Math.max(0,s-STARTS[i]-0.2); beatSvg[i].innerHTML=K.beats[i](Math.min(u,K.BEAT_END[i]+0.01),t); });
     return;
@@ -469,7 +512,7 @@ artSvgs.forEach(sv=>{ const draw=t=>{ sv.innerHTML=K.ART[sv.dataset.art](t); }, 
 
 // ---- the welcome clock. The intro runs at full rate; after it, the crew only breathes and blinks, so a few frames a
 //      second are enough, and nothing is drawn while the welcome is off screen or the tab is hidden.
-const INTRO=7.4, IDLE_MS=80;
+const INTRO=8.6, IDLE_MS=80;
 if(q.has('t')){ render(parseFloat(q.get('t'))); }
 else if(q.has('capture')){ render(0); }
 else if(reduce && !FILM){ render(12); }
