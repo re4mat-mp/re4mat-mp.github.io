@@ -295,9 +295,9 @@ const PROJECTS = [
     .beats{grid-template-columns:1fr;gap:18px;margin-top:24px}
     .range{grid-template-columns:1fr;padding:12px 14px 16px;margin-top:20px}
     .range .crew{width:100%;max-width:250px;height:auto;aspect-ratio:300/160;margin:0 auto}
-    .stamps{flex-wrap:nowrap;gap:6px;justify-content:space-between}
-    .stamp{width:46px;height:46px;border-width:2.2px;border-radius:9px;box-shadow:3px 3px 0 var(--ink)}
-    .stamp .g{font-size:19px}.stamp.two .g{font-size:14px}.stamp .k{font-size:5.6px;margin-top:3px;letter-spacing:.03em}
+    .stamps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 10px;justify-items:center}
+    .stamp{width:76px;height:76px;border-radius:12px;box-shadow:3px 3px 0 var(--ink)}
+    .stamp .g{font-size:29px}.stamp.two .g{font-size:23px}.stamp .k{font-size:9px;margin-top:5px;letter-spacing:.06em}
     .beat{display:grid;grid-template-columns:52% 1fr;gap:14px;align-items:center}
     .beat figcaption{margin:0;font-size:16px}
     .beat .n{display:block;margin:0 0 6px}
@@ -310,7 +310,7 @@ const PROJECTS = [
   }
   @media (prefers-reduced-motion:reduce){.card,.card .cbadge,.stamp{animation:none!important}}
 </style>
-<noscript><style>.beats,#pieces{display:none}</style></noscript>
+<noscript><style>.beats,#pieces,.range{display:none}</style></noscript>
 </head>
 <body>
 <header id="hero">
@@ -322,10 +322,10 @@ const PROJECTS = [
     </div>
   </div>
   <section class="range" aria-labelledby="rk">
-    <svg class="crew" id="crew" viewBox="0 30 300 160" role="img" aria-label="Me, a person, between a round agent and a square robot: the crew I build with"></svg>
+    <svg class="crew" id="crew" viewBox="0 30 300 160" role="img" aria-label="Me, a person, between a square robot and a round agent: the crew I build with"></svg>
     <div>
       <div class="rk" id="rk">WHAT I MAKE</div>
-      <p class="rl">Tools for work, <b>teams of agents</b>, a game, a house you can walk through, a travel book. <b>All made with Claude.</b></p>
+      <p class="rl">A Claude Code setup, a factory for big jobs, a board for a crew of agents, a travel book, a house you can walk through, a game. <b>All made with Claude.</b></p>
       <nav class="stamps" id="stamps" aria-label="The six pieces"></nav>
     </div>
   </section>
@@ -366,7 +366,8 @@ const PROJECTS = [
   <p class="lead">The same page in words, for people and for AI.</p>
   <p><strong>Hi, I'm Matias.</strong> I build with Claude Code: small teams of agents with one craft each, reviewers
     that never wrote the code they review, and guards that keep a person in the loop before anything ships.</p>
-  <p>Every piece here opens: each one has a page you can click through.</p>
+  <p>What I make: a Claude Code setup, a factory for big jobs, a board for a crew of agents, a travel book, a house you
+    can walk through, a game. All made with Claude. Every piece here opens: each one has a page you can click through.</p>
   <h3>The pieces, in order</h3>
   <ol>
     <li><b><a href="https://re4mat-mp.github.io/claude-setup-guide/">The setup guide</a></b> (箱, the box): my Claude Code
